@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--引入java配置文件-->
+    <context:property-placeholder location="db.properties"/>
+
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${db.driver}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="maxIdle" value="5"/>
+    </bean>
+
+    <!--配置sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定Mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--指定数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--注入sqlSessionFactory-->
+    <bean id="studentDao" class="com.kevin.dao.impl.StudentDaoImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+
+    <!--  配置方式创建bean  -->
+    <bean id="student1" class="com.kevin.pojo.Student">
+        <property name="name" value="xiaoming"></property>
+        <property name="age" value="23"></property>
+    </bean>
+    <!--  工厂方式创建bean -->
+    <bean id="StudentFactory" class="com.kevin.dao.StudentFactory"></bean>
+    <bean id="getStudent1" factory-method="getStudent" factory-bean="StudentFactory">
+        <constructor-arg index="0" value="xiaoming"></constructor-arg>
+        <constructor-arg index="1" value="24"></constructor-arg>
+    </bean>
+    <!--注解方式创建bean    -->
+    <context:component-scan base-package="com.kevin.dao"/>
+</beans>
