@@ -1,7 +1,7 @@
 package test;
 
 import com.kevin.pojo.Student;
-import com.kevin.dao.Teacher;
+import com.kevin.pojo.Teacher;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

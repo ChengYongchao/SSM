@@ -1,4 +1,4 @@
-package com.kevin.dao;
+package com.kevin.pojo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
